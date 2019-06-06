@@ -18,7 +18,7 @@ pipeline {
         stage ('Deploy on Dev') {
            
         steps {
-        sh "ansible-playbook -i /home/impadmin/hosts -l Dev /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH hadoop_dist=$HADDOP_DIS" 
+        sh "ansible-playbook -i /home/impadmin/hosts -l Dev /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" //hadoop_dist=$HADDOP_DIS" 
             }
 			}
 		stage ('Deploy on QA') {
@@ -28,7 +28,7 @@ pipeline {
     steps {
 	      sh 'echo "Deploy into QA"' }
            {
-          sh "ansible-playbook -i /home/impadmin/hosts -l QA /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH hadoop_dist=$HADDOP_DIS" 
+          sh "ansible-playbook -i /home/impadmin/hosts -l QA /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" // hadoop_dist=$HADDOP_DIS" 
             }
         }
     }
