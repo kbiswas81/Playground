@@ -7,7 +7,7 @@ pipeline {
                 name: 'STOP_PATH',
                 defaultValue:"/home/impadmin/test1",
                 description: "Where to stop services!")
-			string(
+//			string(
  //               name: 'HADDOP_DIS',
  //               defaultValue:"HDP",
  //               description: "Which Hadoop distro to be deployed HDP|CDH!")
