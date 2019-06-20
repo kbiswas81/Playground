@@ -1,4 +1,4 @@
-!/usr/bin/env groovy
+#!/usr/bin/env groovy
 pipeline {
 ('checkout') {
                     git credentialsId: 'f11a969-5319-44d6-aac3-b4716829bc14', url: 'git@github.com:kbiswas81/Playground.git, branch: "${master}"'
