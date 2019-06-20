@@ -1,6 +1,11 @@
 #!/usr/bin/env groovy
 pipeline {
     agent any
+git(
+       url: 'git@github.com:kbiswas81/Playground.git',
+       credentialsId: '9f11a969-5319-44d6-aac3-b4716829bc14',
+       branch: "${master}"
+    )
     parameters {
         
 			string(
