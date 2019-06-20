@@ -1,8 +1,12 @@
 #!/usr/bin/env groovy
 pipeline {
-('checkout') {
-                    git credentialsId: 'f11a969-5319-44d6-aac3-b4716829bc14', url: 'git@github.com:kbiswas81/Playground.git, branch: "${master}"'
-                }
+checkout([$class: 'GitSCM', 
+    branches: [[name: '*/master']], 
+    doGenerateSubmoduleConfigurations: false, 
+    extensions: [[$class: 'CleanCheckout'],path:'/home/impadmin/ansible'], 
+    submoduleCfg: [], 
+    userRemoteConfigs: [[credentialsId: '9f11a969-5319-44d6-aac3-b4716829bc14', url: 'git@github.com:kbiswas81/Playground.git']]
+])
     agent any
     parameters {
 
@@ -36,5 +40,3 @@ pipeline {
         }
     }
 }
-~
-
