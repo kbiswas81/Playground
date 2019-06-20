@@ -1,10 +1,14 @@
 #!/usr/bin/env groovy
 pipeline {
-checkout([$class: 'GitSCM',
-	  branches: [[name: '*/master']],
-          userRemoteConfigs: [[credentialsId: '9f11a969-5319-44d6-aac3-b4716829bc14', url: 'git@github.com:kbiswas81/Playground.git']]
-          extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '/home/']]
-          ])
+dir ('/home/jenkins/CLONE'){
+git(
+       url: 'git@github.com:kbiswas81/Playground.git',
+       credentialsId: '9f11a969-5319-44d6-aac3-b4716829bc14',
+       branch: "${master}"
+    ) }
+
+
+
     agent any
     parameters {
 
@@ -37,6 +41,4 @@ checkout([$class: 'GitSCM',
             }
         }
     }
-
-~
 
