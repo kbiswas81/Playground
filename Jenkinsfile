@@ -5,6 +5,6 @@ node {
 
     try {
         stage ('Clone') {
-      	checkout scm: [$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[credentialsId: '9f11a969-5319-44d6-aac3-b4716829bc14']],url: 'git@github.com:kbiswas81/Playground.git'] 
+      	 git([url: 'git@bitbucket.org:company/repo.git', branch: 'master', credentialsId: '12345-1234-4696-af25-123455'])
         }
 
