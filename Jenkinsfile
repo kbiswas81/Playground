@@ -39,4 +39,4 @@ checkout([$class: 'GitSCM',
             }
         }
     }
-}
+
