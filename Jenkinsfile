@@ -14,7 +14,7 @@ pipeline {
 
     stages {
         stage ('Deployment Started') {
-            if (params.HOST == "Dev")
+         //   if (params.HOST == "Dev")
                 // Start deployment if "Dev" is requested
 
 
