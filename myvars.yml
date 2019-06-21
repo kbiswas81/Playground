@@ -1,0 +1,15 @@
+URL_BUNDLE_COMMONS: "http://192.168.218.111:8080/jenkins/view/IDW%20Product/job/GIT-IDW-Commons/314/artifact/idw-common-assembler/target/idw-commons-2.4-s2.tar.gz" 
+
+URL_BUNDLE_MD: "http://192.168.218.111:8080/jenkins/view/Nightly%20Build/job/GIT-IDW-MD-NIGHTLY-BUILD/163/artifact/idw-rest-service/target/idw-mdm-2.4-s2.tar.gz" 
+
+URL_BUNDLE_GV: "http://192.168.218.111:8080/jenkins/view/Nightly%20Build/job/GIT-IDW-GV-NIGHTLY-BUILD/158/artifact/idw-gov-application/idw-gov-application-assembler/target/idw-gv-2.4-s2.tar.gz" 
+ 
+URL_BUNDLE_UI: "http://192.168.218.111:8080/jenkins/job/GIT-IDW-UI-2.0\_MASTER/159/artifact/target/IDW-UI-2.3.2.tar.gz"
+
+URL_BUNDLE_WM: "http://192.168.218.111:8080/jenkins/view/Nightly%20Build/job/GIT-IDW-WM-NIGHTLY-BUILD/172/artifact/source/wmg-assembler/target/idw-wmg-2.4-s2.tar.gz" 
+
+URL_BUNDLE_VENEER: "http://192.168.218.111:8080/jenkins/view/IDW%20Product/job/GIT-IDW-Veneer/253/artifact/metrics-collector/target/MetricsCollector-2.3-bin.tar.gz"
+
+URL_BUNDLE_ML_FRAMEWORK: "http://192.168.218.111:8080/jenkins/view/IDW%20Product/job/IDW-ML-FRAMEWORK/480/artifact/QET/target/hive-qet-predictor-2.3-bin.tar.gz"
+
+URL_BUNDLE_TURIN: "http://192.168.218.111:8080/jenkins/view/IDW%20Product/job/GIT-IDW-PF/1079/artifact/turin-framework/turin-assembler/target/turin-framework-2.4-s2.tar.gz"
