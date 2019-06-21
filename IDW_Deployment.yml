@@ -1,0 +1,177 @@
+---
+
+- name: IDW Deployment playbook
+  hosts: all
+  #  connection: local
+  vars_files:
+    - myvars.yml
+  vars_prompt:
+    - name: "stop"
+      prompt: "Enter path of stop script"
+      private: no
+      #    - name: "URL_BUNDLE_COMMONS"
+      #  prompt: "Enter path of URL_BUNDLE_COMMONS tar file"
+      #private: no
+
+      #    - name: "URL_BUNDLE_MD"
+      #prompt: "Enter path of URL_BUNDLE_MD tar file"
+      #private: no
+
+      #    - name: "URL_BUNDLE_GV"
+      #prompt: "Enter path of URL_BUNDLE_GV tar file"
+      #private: no
+
+      #    - name: "URL_BUNDLE_UI"
+      #    prompt: "Enter path of URL_BUNDLE_UI_2_0 tar file"
+      #  private: no
+
+      #    - name: "URL_BUNDLE_WM"
+      #      prompt: "Enter path of URL_BUNDLE_WM tar file"
+      #     private: no
+
+      #  - name: "URL_BUNDLE_TURIN"
+      #  prompt: "Enter path of URL_BUNDLE_TURIN tar file"
+      #  private: no
+
+      #    - name: "URL_BUNDLE_VENEER"
+      #     prompt: "Enter path of URL_BUNDLE_VENEER tar file"
+      #      private: no
+
+      #    - name: "URL_BUNDLE_ML_FRAMEWORK"
+      #  prompt: "Enter path of URL_BUNDLE_ML_FRAMEWORK tar file"
+      #      private: no
+
+  vars:
+    mand_process:
+      - apache2
+      - RunJar
+      - LicenseDiscoveryClient
+      - TranslationDiscoveryApplication
+      - RunJar
+      - idw-rest-service.jar
+      - wmg-recommender.jar
+      - EtlDiscoveryClient
+      - idw-common-service.jar
+      - WebServiceDiscoveryApplication
+      - idw-gov-application.jar
+      - AssessmentDiscoveryClient
+      - AssessmentConsumer
+      - EtlTranslationConsumer
+      - jar
+      - MessagingServer
+      - idw-gov-framework.jar
+      - idw-turin-service.jar
+      - ExecutionDiscoveryClient
+      - SparkSubmit
+      - Master
+      - SQLOffloadSqoopUtilityConsumerStarter
+      - AssessmentFileTransferConsumer
+      - MigrationDiscoveryClient
+      - ReportingDiscoveryClient
+      - MDServer
+      - ValidationDiscoveryClient
+  tasks:
+    - name: Copy the stop script
+      copy: src="{{ stop }}/bin/stop-all.sh" dest="{{ stop }}/bin/" mode=0777
+
+    - name: stop the all process
+      shell: sh "{{ stop }}/bin/stop-all.sh"
+      retries: 3
+      delay: 15
+    
+    - name: Check All Cluster Running Process 
+      shell: ps -ef |grep apache |awk '{print $2,$1}' |grep -v root |grep -v ubuntu | awk '{print $1}'
+      register: services_status
+
+      #    - name: Kill process if Running
+      #  shell: "kill -9 {{ item }}" 
+      #  with_items: "{{ services_status.stdout_lines }}"
+      #  when: services_status.stdout_lines > 1       
+      #      become: yes
+      #  become_user: root      
+             
+    - name: Take a backup of existing deployment
+      shell: cp -frp {{stop}}  /home/impadmin/backup-{{ansible_date_time.date}};  
+          
+    - name: Update tar file locations COMMONS
+      shell: sed -i 's_\(URL.*COMMONS=\)\(.*\)_\1"{{URL_BUNDLE_COMMONS}}"_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+    - name: Update tar file locations GV
+      shell: sed -i 's_\(URL.*GV=\)\(.*\)_\1{{URL_BUNDLE_GV}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+
+    - name: Update tar file locations MD
+      shell: sed -i 's_\(URL.*MD=\)\(.*\)_\1{{URL_BUNDLE_MD}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+
+    - name: Update tar file locations URL_BUNDLE_UI_2_0
+      shell: sed -i 's_\(URL.*0=\)\(.*\)_\1{{URL_BUNDLE_UI}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+
+    - name: Update tar file locations URL_BUNDLE_WM
+      shell: sed -i 's_\(URL.*WM=\)\(.*\)_\1{{URL_BUNDLE_WM}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+
+    - name: Update tar file locations URL_BUNDLE_TURI
+      shell: sed -i 's_\(URL.*TURIN=\)\(.*\)_\1{{URL_BUNDLE_TURIN}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+
+    - name: Update tar file locations URL_BUNDLE_VENEER
+      shell: sed -i 's_\(URL.*VENEER=\)\(.*\)_\1{{URL_BUNDLE_VENEER}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+    - name: Update tar file locations URL_BUNDLE_ML_FRAMEWORK
+      shell: sed -i 's_\(URL.*FRAMEWORK=\)\(.*\)_\1{{URL_BUNDLE_ML_FRAMEWORK}}_g' /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/test.sh;
+
+    - name: Change directory to /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle & run setup script
+      shell: cd /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle/;sh idw-setup.sh >> /home/impadmin/build.log;
+      register: results
+      failed_when: "results.rc != 0"
+    
+    - name: find the today created file and copy to the user home directory
+      shell: cd /home/impadmin/DeploymentScript_2.2_dev/IDW-2.0-Deployment-Scripts/prepare_bundle; ls -tr | tail -n 1 | xargs -I{} cp {} /home/impadmin;
+
+
+    - name: Extract tar file inside /home/impadmin/
+      shell: cd /home/impadmin/; ls -tr | tail -n 1 | xargs -I{} tar -xzf {};
+    
+    - name: Exterminate mankind
+      pause: prompt='Please confirm you want to exterminate mankind! Press return to continue. Press Ctrl+c and then "a" to abort'
+    
+    - name: delete files from old deployment directory
+      shell: rm -rf {{stop}}/lib/hadoop_distro_libs/*
+
+    - name: run configure file
+      shell: cd /home/impadmin/; ls -tr | tail -n 1
+      register: latest_build
+
+
+    - name: Change directory to latest build bin and execute configure script
+      shell: sh configure.sh
+      with_items: "{{latest_build.stdout}}"
+      args:
+        chdir: "/home/impadmin/{{item}}/impadmin/backup-2019-05-26/test1/bin"
+
+
+    - name: run deployment sh file
+      shell: chmod +x deploy.sh; sh deploy.sh;
+      with_items: "{{latest_build.stdout}}"
+      args:
+        chdir: "/home/impadmin/{{item}}/impadmin/backup-2019-05-26/test1/bin"
+
+
+    - name: run init file
+      shell: chmod +x deploy.sh; sh deploy.sh;
+      with_items: "{{latest_build.stdout}}"
+      args:
+        chdir: "/home/impadmin/{{item}}/impadmin/backup-2019-05-26/test1/bin"
+
+
+    - name: Start all hadoop services
+      shell: sh start.sh;
+      with_items: "{{latest_build.stdout}}"
+      args:
+        chdir: "/home/impadmin/{{item}}/impadmin/backup-2019-05-26/test1/bin"
+
+    - name: Validate Hadoop Service
+      shell: ps -ef |grep apache2 | wc -l;
+      ignore_errors: yes
+      changed_when: false
+      register: jps
+      failed_when: "jps.stdout|float < 4"
+    
+    
+    -  debug:
+         var: jps 
