@@ -19,7 +19,7 @@ pipeline {
 
 
             steps {
-                sh "ansible-playbook -i /home/impadmin/hosts -l $HOST /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH"
+                sh "ansible-playbook -i ${WORKSPACE}/hosts -l $HOST ${WORKSPACE}/IDW_Deployment.yml -e stop=$STOP_PATH"
                                 }
 
                                 }
