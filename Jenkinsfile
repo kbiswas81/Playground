@@ -1,31 +1,28 @@
+#!/usr/bin/env groovy
 pipeline {
-	agent any
+    agent any
     parameters {
         choice(
-            choices: ['Dev' , 'QA'],
+            choices: ['Dev' ,'Dev1' , 'QA'],
             description: 'Select Node to Deploy',
             name: 'HOST')
-			string(
+                        string(
                 name: 'STOP_PATH',
                 defaultValue:"/home/impadmin/test1",
                 description: "Where to stop services!")
     }
-     stages {
-        stage ('Main Stage') {
+
+    stages {
+        stage ('Deployment Started') {
+            if (params.HOST == "Dev")
+                // Start deployment if "Dev" is requested
+
+
             steps {
-                 sh 'echo find'{
-                    if (params.HOST == "Dev") {
-                        stage ('Stage 1') {
-                            sh 'echo Stage 1'
-                        }
-                    }
-                    if (params.HOST == "QA") {
-                        stage ('Stage 2') {
-                            sh 'echo Stage 2'
-                        }
-                    }
-                }
+                sh "ansible-playbook -i /home/impadmin/hosts -l $HOST /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH"
+                                }
+
+                                }
             }
         }
-    }
-}
+
