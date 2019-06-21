@@ -17,7 +17,7 @@
 [Dev]
 172.31.25.65 ansible_ssh_user=impadmin
 [Dev1]
-172.31.25.65 ansible_ssh_user=impadmin
+172.31.20.156 ansible_ssh_user=impadmin
 
 [QA]
 172.31.25.65
