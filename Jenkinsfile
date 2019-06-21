@@ -13,7 +13,7 @@ pipeline {
      stages {
         stage ('Main Stage') {
             steps {
-                 sh "ansible-playbook -i /home/impadmin/hosts -l $HOST /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" {
+                 sh 'echo find'{
                     if (params.HOST == "Dev") {
                         stage ('Stage 1') {
                             sh 'echo Stage 1'
