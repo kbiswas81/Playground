@@ -8,6 +8,12 @@ pipeline {
                 name: 'STOP_PATH',
                 defaultValue:"/home/impadmin/test1",
                 description: "Where to stop services!")
+               choice(
+        defaultValue: 'Dev',
+        name: 'Env',
+        choices: 'Dev\QA',
+        description: 'Env'
+    )
 		    }
     environment{
     EnvDev = 'Dev'
@@ -18,7 +24,7 @@ pipeline {
         stage ('Deploy on Dev') {
            
         steps {
-        sh "ansible-playbook -i /home/impadmin/hosts -l $EnvDev /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" 
+        sh "ansible-playbook -i /home/impadmin/hosts -l $Env /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" 
             }
 			}
 		stage ('Deploy on QA') {
@@ -28,7 +34,7 @@ pipeline {
     steps {
 	      sh 'echo "Deploy into QA"' }
            {
-          sh "ansible-playbook -i /home/impadmin/hosts -l $EnvDev /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" 
+          sh "ansible-playbook -i /home/impadmin/hosts -l $Env /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" 
             }
         }
     }
