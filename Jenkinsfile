@@ -14,7 +14,7 @@ pipeline {
         stage ('Deploy on Dev') {
            
         steps {
-        sh "ansible-playbook -i /home/impadmin/hosts -l Dev /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" 
+        sh "ansible-playbook -i /home/impadmin/hosts -l $Env /home/impadmin/IDW_Deployment.yml -e stop=$STOP_PATH" 
             }
 			}
 		stage ('Deploy on QA') {
